@@ -19,11 +19,6 @@ export default function LikeButton({
     const [likes, setLikes] = useState(Number(likesTotal));
     const [isLike, setIsLike] = useState(false);
 
-    function handleclick() {
-        setLikes(likes + (isLike ? -1 : 1));
-        setIsLike(!isLike);
-    }
-
     const handleLike = async () => {
         const newLikes = await likeQuestion(questionId, isLike);
         setIsLike(!isLike);

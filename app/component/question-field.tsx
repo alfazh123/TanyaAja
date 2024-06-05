@@ -2,9 +2,9 @@ import { getQuestions } from "../lib/action";
 import LikeButton from "./like-button";
 
 export default async function QuestionField({ id }: { id: string }) {
-    const questions = await getQuestions();
+    const questions = await getQuestions({ roomId: id });
 
-    // console.log(questions);
+    console.log(questions);
     return (
         <ul className="space-y-4 m-4 mb-32">
             {questions.map(

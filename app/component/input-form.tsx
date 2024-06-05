@@ -1,11 +1,14 @@
+"use client";
+
 import { createQuestion } from "../lib/action";
 
 export default function InputForm({ id }: { id: string }) {
     return (
         <form
-            action={createQuestion(id).toString()} // Convert the Promise to a string
+            action={createQuestion}
             className="flex justify-between fixed bottom-0 right-0 left-0 m-4  p-4 rounded-md gap-4 bg-slate-200"
         >
+            <input type="hidden" name="roomId" value={id} readOnly />
             <div className="flex flex-col w-5/6">
                 <label htmlFor="number">Question</label>
                 <input

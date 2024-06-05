@@ -4,10 +4,9 @@ import { pool } from "@/utils/db";
 import { redirect } from "next/navigation";
 import { usePathname } from "next/navigation";
 
-const formData = new FormData();
-
-export async function createQuestion(roomId: string) {
+export async function createQuestion(formData: FormData) {
     const question = formData.get("questionField");
+    const roomId = formData.get("roomId");
 
     try {
         const questionTable = await pool.query(
@@ -15,7 +14,7 @@ export async function createQuestion(roomId: string) {
         );
 
         const newQuestion = await pool.query(
-            "INSERT INTO questions (question, idroom) VALUES ($1. $2) RETURNING * ",
+            "INSERT INTO questions (question, idRoom) VALUES ($1, $2) RETURNING * ",
             [question, roomId]
         );
         console.log("Post question sucess");
@@ -23,11 +22,14 @@ export async function createQuestion(roomId: string) {
         console.log("Error occurated : ", err);
     }
 
-    redirect("/");
+    redirect(`/${roomId}`);
 }
 
-export async function getQuestions() {
-    const questions = await pool.query("SELECT * FROM questions");
+export async function getQuestions({ roomId }: { roomId: string }) {
+    const questions = await pool.query(
+        "SELECT * FROM questions WHERE idRoom = $1 ORDER BY likes DESC",
+        [roomId]
+    );
     const result = questions.rows;
     return result;
 }
